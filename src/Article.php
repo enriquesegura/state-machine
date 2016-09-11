@@ -15,6 +15,16 @@ class Article
 	protected $articleType;
 
 	/**
+	 * @var MP\State\StateInterface
+	 */
+	protected $currentState;
+
+	/**
+	 * @var array
+	 */
+	protected $stateLog = [];
+
+	/**
 	 * @var bool
 	 */
 	protected $hasGiftWrapping = false;
@@ -61,6 +71,29 @@ class Article
 	 */
 	public function getState()
 	{
+		return $this->currentState;
+	}
+
+	/**
+	 * set StateInterface
+	 */
+	public function setState(StateInterface $currentState)
+	{
+		$this->currentState = $currentState;
+		$this->logState($currentState);
+	}
+
+	protected function logState(StateInterface $state)
+	{
+		$this->stateLog[] = [
+			"timestamp" => time(),
+			"state" => $state,
+		];
+	}
+
+	public function getStateLog()
+	{
+		return $this->stateLog;
 	}
 
 	/**
